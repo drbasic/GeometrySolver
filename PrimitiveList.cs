@@ -6,32 +6,40 @@ using WindowsFormsApp2;
 
 namespace ng
 {
+    public class PointAndCounter
+    {
+        public IPrimitive primitive;
+        public int counter;
+    };
+
     public class PrimitiveList
     {
         public void Add(Point p)
         {
-            if (points_.TryGetValue(p, out int counter))
+            if (points_.TryGetValue(p, out PointAndCounter item))
             {
-                points_[p] = counter + 1;
+                ++item.counter;
             }
             else
             {
-                points_.Add(p, 1);
+                PointAndCounter pc = new PointAndCounter { primitive = p, counter = 1};
+                points_.Add(p, pc);
                 Primitives.Add(p);
             }
         }
 
         public void Remove(Point p)
         {
-            if (points_.TryGetValue(p, out int counter) && counter > 0)
+            if (points_.TryGetValue(p, out PointAndCounter item) && item.counter > 0)
             {
-                if (counter == 1)
+                if (item.counter == 1)
                 {
                     points_.Remove(p);
+                    Primitives.Remove(item.primitive);
                 }
                 else
                 {
-                    --points_[p];
+                    --item.counter;
                 }
             }
             else
@@ -196,46 +204,39 @@ namespace ng
 
         private void AddIntersections(IPrimitive primitive)
         {
-            List<Point> added = null;
-            foreach (var a in Primitives)
-            {
-                Point[] points = a.Intersect(primitive);
-                if (points != null)
-                {
-                    if (added == null)
-                        added = new List<Point>();
-                    added.AddRange(points);
-                }
-            }
-            if (added != null)
-            {
-                foreach (var p in added)
-                    Add(p);
-            }
+            List<Point> intersections = GetIntersections(primitive);
+            foreach (var p in intersections)
+                Add(p);
         }
 
         private void RemoveIntersections(IPrimitive primitive)
         {
-            List<Point> found = new List<Point>();
+            List<Point> intersections = GetIntersections(primitive);
+            foreach (var p in intersections)
+                Remove(p);
+        }
+
+        private List<Point> GetIntersections(IPrimitive primitive)
+        {
+            List<Point> intersections = new List<Point>();
             foreach (var a in Primitives)
             {
                 Point[] points = a.Intersect(primitive);
                 if (points != null)
                 {
-                    found.AddRange(points);
+                    intersections.AddRange(points);
                 }
             }
-            foreach (var p in found)
-                Remove(p);
+            return intersections;
         }
 
         public bool Contains(Point p)
         {
-            return points_.TryGetValue(p, out int counter) && counter > 0;
+            return points_.TryGetValue(p, out PointAndCounter item) && item.counter > 0;
         }
 
-        public List<IPrimitive> Primitives { get; } = new List<ng.IPrimitive>();
+        public List<IPrimitive> Primitives { get; } = new List<IPrimitive>();
 
-        private readonly Dictionary<Point, Int32> points_ = new Dictionary<Point, int>(new PointInt64Cmp());
+        private readonly Dictionary<Point, PointAndCounter> points_ = new Dictionary<Point, PointAndCounter>(new PointInt64Cmp());
     }
 }

@@ -45,7 +45,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Location = new System.Drawing.Point(85, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(874, 494);
+            this.panel1.Size = new System.Drawing.Size(782, 494);
             this.panel1.TabIndex = 1;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
@@ -114,10 +114,10 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(965, 15);
+            this.textBox1.Location = new System.Drawing.Point(873, 15);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(146, 491);
+            this.textBox1.Size = new System.Drawing.Size(238, 491);
             this.textBox1.TabIndex = 9;
             // 
             // Form1
